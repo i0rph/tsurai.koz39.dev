@@ -1,5 +1,5 @@
-import { Component, createSignal } from 'solid-js';
-import { useRoutes } from '@solidjs/router';
+import { Component, createSignal, Show } from 'solid-js';
+import { useRoutes, useLocation } from '@solidjs/router';
 
 import { routes } from './routes';
 
@@ -9,6 +9,8 @@ import Footer from 'components/Layouts/Footer';
 
 const App: Component = () => {
   const Route = useRoutes(routes);
+  const location = useLocation();
+
   const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
   return (
@@ -17,7 +19,9 @@ const App: Component = () => {
       <Sidebar />
 
       <section class="flex h-full flex-col xl:pl-72">
-        <Searchbar setSidebarOpen={setSidebarOpen} />
+        <Show when={location.pathname === '/'}>
+          <Searchbar setSidebarOpen={setSidebarOpen} />
+        </Show>
         <main class="flex-auto p-4 sm:p-8">
           <Route />
         </main>
