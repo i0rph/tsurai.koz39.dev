@@ -1,42 +1,29 @@
-import type { Component } from 'solid-js';
-import { Link, useRoutes, useLocation } from '@solidjs/router';
+import { Component, createSignal } from 'solid-js';
+import { useRoutes } from '@solidjs/router';
 
 import { routes } from './routes';
 
+import Sidebar, { SidebarMobile } from 'components/Layouts/Sidebar';
+import Searchbar from 'components/Layouts/Searchbar';
+import Footer from 'components/Layouts/Footer';
+
 const App: Component = () => {
-  const location = useLocation();
   const Route = useRoutes(routes);
+  const [sidebarOpen, setSidebarOpen] = createSignal(false);
 
   return (
     <>
-      <nav class="bg-gray-200 px-4 text-gray-900">
-        <ul class="flex items-center">
-          <li class="px-4 py-2">
-            <Link href="/" class="no-underline hover:underline">
-              Home
-            </Link>
-          </li>
-          <li class="px-4 py-2">
-            <Link href="/about" class="no-underline hover:underline">
-              About
-            </Link>
-          </li>
-          <li class="px-4 py-2">
-            <Link href="/error" class="no-underline hover:underline">
-              Error
-            </Link>
-          </li>
+      <SidebarMobile sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <Sidebar />
 
-          <li class="ml-auto flex items-center space-x-1 text-sm">
-            <span>URL:</span>
-            <input class="w-75px rounded-lg bg-white p-1 text-sm" type="text" readOnly value={location.pathname} />
-          </li>
-        </ul>
-      </nav>
+      <section class="flex h-full flex-col xl:pl-72">
+        <Searchbar setSidebarOpen={setSidebarOpen} />
+        <main class="flex-auto p-4 sm:p-8">
+          <Route />
+        </main>
 
-      <main>
-        <Route />
-      </main>
+        <Footer />
+      </section>
     </>
   );
 };

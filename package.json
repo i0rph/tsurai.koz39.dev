@@ -1,7 +1,8 @@
 {
   "name": "vite-template-solid",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "start": "vite",
     "build": "vite build",
@@ -30,9 +31,10 @@
   "dependencies": {
     "@solidjs/router": "^0.8.2",
     "@tanstack/solid-query": "^4.29.17",
+    "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "path": "^0.12.7",
-    "solform": "^1.0.7",
+    "solid-forms": "^0.4.8",
     "solid-headless": "^0.13.1",
     "solid-icons": "^1.0.8",
     "solid-js": "^1.7.6",

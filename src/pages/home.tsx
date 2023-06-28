@@ -1,24 +1,45 @@
-import { createSignal } from 'solid-js';
+import { For, createEffect } from 'solid-js';
+import { createQuery } from '@tanstack/solid-query';
+import { CardGrid, Card, CardSkeleton } from 'components/Cards';
+import { useStreamer } from 'hooks/useContext';
+import request from 'utils/httpRequest';
 
 export default function Home() {
-  const [count, setCount] = createSignal(0);
+  const fetchData = async q => {
+    const response = await request({
+      method: 'GET',
+      url: `/${q.queryKey[0]}`,
+    });
+
+    return response;
+  };
+
+  const query = createQuery(() => ['streamers'], fetchData);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, { set }] = useStreamer();
+
+  createEffect(() => {
+    if (!query.isLoading) {
+      const streamerList = query.data.map(streamer => streamer.id);
+
+      const obj = {};
+
+      for (const streamer of streamerList) {
+        obj[`${streamer}`] = true;
+        obj[`${streamer}_streamup`] = true;
+        obj[`${streamer}_streamdown`] = true;
+      }
+
+      set(obj);
+    }
+  });
 
   return (
-    <section class="bg-gray-100 p-8 text-gray-700">
-      <h1 class="text-2xl font-bold">Home</h1>
-      <p class="mt-4">This is the home page.</p>
-
-      <div class="flex items-center space-x-2">
-        <button class="rounded-lg border border-gray-900 px-2" onClick={() => setCount(count() - 1)}>
-          -
-        </button>
-
-        <output class="p-10px">Count: {count()}</output>
-
-        <button class="rounded-lg border border-gray-900 px-2" onClick={() => setCount(count() + 1)}>
-          +
-        </button>
-      </div>
+    <section>
+      <CardGrid>
+        {query.isLoading ? <For each={Array(12).fill(null)}>{() => <CardSkeleton />}</For> : <Card list={query.data} />}
+      </CardGrid>
     </section>
   );
 }
