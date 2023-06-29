@@ -8,11 +8,11 @@ const __dirname = path.resolve();
 
 export default defineConfig({
   plugins: [
-    solidPlugin(),
-    eslintPlugin(),
     devtools({
       autoname: true,
     }),
+    solidPlugin(),
+    eslintPlugin(),
   ],
   server: {
     port: 3000,

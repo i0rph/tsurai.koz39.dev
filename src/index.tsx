@@ -1,12 +1,15 @@
 /* @refresh reload */
 import 'styles/global.css';
-import 'solid-devtools';
 import { render } from 'solid-js/web';
 import { Router } from '@solidjs/router';
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { Toaster } from 'solid-toast';
 import { StreamerProvider } from 'hooks/useContext';
 import App from './app';
+
+if (import.meta.env.DEV) {
+  import('solid-devtools');
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

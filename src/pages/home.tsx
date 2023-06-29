@@ -14,14 +14,15 @@ export default function Home() {
     return response;
   };
 
-  const query = createQuery(() => ['streamers'], fetchData);
+  const queryStreamer = createQuery(() => ['streamers'], fetchData);
+  const queryCount = createQuery(() => ['webhooks/count'], fetchData);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, { set }] = useStreamer();
 
   createEffect(() => {
-    if (!query.isLoading) {
-      const streamerList = query.data.map(streamer => streamer.id);
+    if (!queryStreamer.isLoading) {
+      const streamerList = queryStreamer.data.map(streamer => streamer.id);
 
       const obj = {};
 
@@ -37,8 +38,15 @@ export default function Home() {
 
   return (
     <section>
+      {queryCount.isLoading ? null : (
+        <div class="mb-4 text-center text-gray-600 sm:-mt-4 sm:text-left">{queryCount.data}개의 웹후크가 구독 중</div>
+      )}
       <CardGrid>
-        {query.isLoading ? <For each={Array(12).fill(null)}>{() => <CardSkeleton />}</For> : <Card list={query.data} />}
+        {queryStreamer.isLoading ? (
+          <For each={Array(12).fill(null)}>{() => <CardSkeleton />}</For>
+        ) : (
+          <Card list={queryStreamer.data} />
+        )}
       </CardGrid>
     </section>
   );
