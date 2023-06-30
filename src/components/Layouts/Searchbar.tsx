@@ -18,13 +18,15 @@ export default function Searchbar(props) {
   const setWebhook = async () => {
     if (streamers()) {
       if (regex.test(url())) {
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        const { status, ...others } = streamers();
         const response = await request(
           {
             method: 'PUT',
             url: '/webhooks',
             data: {
               url: url(),
-              ...streamers(),
+              streamers: others,
             },
           },
           { api: false },

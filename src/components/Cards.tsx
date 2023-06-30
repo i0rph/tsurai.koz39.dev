@@ -28,8 +28,8 @@ export function Card(props) {
             <Toggle name={item.id} />
           </div>
           <div class="grid w-full grid-cols-2 py-4">
-            <Checkbox title="스트리밍 시작" name={`${item.id}_streamup`} />
-            <Checkbox title="스트리밍 종료" name={`${item.id}_streamdown`} />
+            <Checkbox title="스트리밍 시작" name={item.id} detail="streamup" />
+            <Checkbox title="스트리밍 종료" name={item.id} detail="streamdown" />
           </div>
           {/* <Disclosure defaultOpen={false} as="div" class="relative">
             <DisclosureButton as="button" class="h-12 w-full text-center text-white">

@@ -24,12 +24,14 @@ export default function Home() {
     if (!queryStreamer.isLoading) {
       const streamerList = queryStreamer.data.map(streamer => streamer.id);
 
-      const obj = {};
+      const obj = { status: {} };
 
       for (const streamer of streamerList) {
-        obj[`${streamer}`] = true;
-        obj[`${streamer}_streamup`] = true;
-        obj[`${streamer}_streamdown`] = true;
+        obj[streamer] = {
+          streamup: true,
+          streamdown: true,
+        };
+        obj['status'][streamer] = true;
       }
 
       set(obj);
@@ -39,7 +41,7 @@ export default function Home() {
   return (
     <section>
       {queryCount.isLoading ? null : (
-        <div class="mb-4 text-center text-gray-600 sm:-mt-4 sm:text-left">{queryCount.data}개의 웹후크가 구독 중</div>
+        <div class="mb-4 text-center text-gray-300 sm:-mt-4 sm:text-left">{queryCount.data}개의 웹후크가 구독 중</div>
       )}
       <CardGrid>
         {queryStreamer.isLoading ? (

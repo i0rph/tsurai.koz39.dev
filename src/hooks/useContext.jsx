@@ -10,10 +10,18 @@ export function StreamerProvider(props) {
         set(v) {
           setStreamers(v);
         },
-        modify(name, v) {
+        modifyStreamer(name, detail, v) {
           setStreamers(value => {
             const obj = { ...value };
-            obj[name] = v;
+            obj[name][detail] = v;
+
+            return obj;
+          });
+        },
+        modifyStatus(name, v) {
+          setStreamers(value => {
+            const obj = { ...value };
+            obj['status'][name] = v;
 
             return obj;
           });
