@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
-import { createSignal, createContext, useContext, JSXElement, createMemo, Accessor, Setter } from 'solid-js';
+import { createSignal, createContext, useContext, JSXElement, Accessor } from 'solid-js';
 
 interface IStreamerProvider {
   children: JSXElement;
