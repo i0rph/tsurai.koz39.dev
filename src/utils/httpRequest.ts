@@ -1,14 +1,25 @@
 import axios from 'axios';
 import toast from 'solid-toast';
 
-function setDefaultRequestOption(option) {
+interface IOption {
+  type?: string;
+  api?: boolean;
+}
+
+interface IObject {
+  method: string;
+  url: string;
+  data?: object;
+}
+
+function setDefaultRequestOption(option: IOption) {
   option.type = option.type ?? 'application/json';
   option.api = option.api ?? true;
 
   return option;
 }
 
-async function request(object, requestOption = {}) {
+async function request(object: IObject, requestOption = {}) {
   try {
     const option = setDefaultRequestOption(requestOption);
 

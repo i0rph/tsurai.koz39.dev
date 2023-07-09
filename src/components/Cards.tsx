@@ -1,9 +1,22 @@
-import { For } from 'solid-js';
+import { For, JSXElement } from 'solid-js';
 // import { Disclosure, DisclosureButton, DisclosurePanel } from 'solid-headless';
 import Toggle from 'components/Form/Toggle';
 import Checkbox from 'components/Form/Checkbox';
 
-export function CardGrid(props) {
+type CardList = {
+  twitch_url: string;
+  avatar_url: string;
+  name: string;
+  id: string;
+};
+interface ICard {
+  list: [CardList];
+}
+interface ICardGrid {
+  children: JSXElement;
+}
+
+export function CardGrid(props: ICardGrid): JSXElement {
   return (
     <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {props.children}
@@ -11,7 +24,7 @@ export function CardGrid(props) {
   );
 }
 
-export function Card(props) {
+export function Card(props: ICard): JSXElement {
   return (
     <For each={props.list}>
       {item => (
@@ -46,7 +59,7 @@ export function Card(props) {
   );
 }
 
-export function CardSkeleton() {
+export function CardSkeleton(): JSXElement {
   return (
     <li class="col-span-1 divide-y divide-gray-700 rounded-lg bg-gray-800 shadow">
       <div class="flex w-full animate-pulse items-center justify-between space-x-6 p-6">

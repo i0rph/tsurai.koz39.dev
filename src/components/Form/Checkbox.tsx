@@ -1,34 +1,34 @@
-import { Show } from 'solid-js';
-import { useStreamer } from 'hooks/useContext';
+import { JSXElement, Show } from 'solid-js';
+import { useAppState, useAppDispatch } from 'hooks/useContext';
 
-export default function Checkbox(props) {
-  const [streamer, { modifyStreamer, modifyStatus }] = useStreamer();
+interface ICheckbox {
+  name: string;
+  detail: string;
+  title: string;
+}
+
+export default function Checkbox(props: ICheckbox): JSXElement {
+  const { signal } = useAppState();
+  const { modifyStreamer, modifyStatus } = useAppDispatch();
 
   const onChangeHandler = evt => {
     modifyStreamer(props.name, props.detail, evt.target.checked);
 
-    if (
-      streamer()['status'][props.name] &&
-      !streamer()[props.name]['streamup'] &&
-      !streamer()[props.name]['streamdown']
-    ) {
+    if (signal()['status'][props.name] && !signal()[props.name]['streamup'] && !signal()[props.name]['streamdown']) {
       modifyStatus(props.name, false);
-    } else if (
-      !streamer()['status'][props.name] &&
-      (streamer()[props.name]['streamup'] || streamer()[props.name]['streamdown'])
-    ) {
+    } else if (!signal()['status'][props.name] && (signal()[props.name]['streamup'] || signal()[props.name]['streamdown'])) {
       modifyStatus(props.name, true);
     }
   };
 
   return (
-    <Show when={streamer()}>
+    <Show when={Object.keys(signal()).length > 1}>
       <div class="flex w-full items-center justify-center">
         <div class="flex h-6 items-center">
           <input
             id={`${props.name}_${props.detail}`}
             type="checkbox"
-            checked={streamer()[props.name][props.detail]}
+            checked={signal()[props.name][props.detail]}
             onChange={onChangeHandler}
             class="h-4 w-4 rounded border-0 border-gray-300 text-blue-600 focus:outline-none focus:ring-0 focus:ring-offset-0"
           />

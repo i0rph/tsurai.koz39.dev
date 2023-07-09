@@ -1,4 +1,4 @@
-import { For } from 'solid-js';
+import { For, JSXElement } from 'solid-js';
 import { FaBrandsGithub, FaBrandsTwitter } from 'solid-icons/fa';
 
 const navigation = [
@@ -14,7 +14,7 @@ const navigation = [
   },
 ];
 
-export default function Footer() {
+export default function Footer(): JSXElement {
   const year = new Date().getFullYear();
 
   return (

@@ -1,25 +1,31 @@
-import { createSignal } from 'solid-js';
+import { JSXElement, Setter, createMemo, createSignal } from 'solid-js';
 import toast from 'solid-toast';
 import { HiOutlineBars3 } from 'solid-icons/hi';
 import { FaBrandsDiscord } from 'solid-icons/fa';
-import { useStreamer } from 'hooks/useContext';
+import { useAppState } from 'hooks/useContext';
 import request from 'utils/httpRequest';
 
 const regex = new RegExp('^https:\\/\\/discord\\.com\\/api\\/webhooks\\/[0-9]{17,20}\\/[A-Za-z0-9_\\-]{60,68}$');
 
-export default function Searchbar(props) {
-  const [streamers] = useStreamer();
+interface ISearchbar {
+  setSidebarOpen: Setter<boolean>;
+}
+
+export default function Searchbar(props: ISearchbar): JSXElement {
+  const { signal } = useAppState();
   const [url, setUrl] = createSignal('');
 
   const openSidebar = () => {
     props.setSidebarOpen(true);
   };
 
+  const isStreamer = createMemo(() => Object.keys(signal()).length > 1);
+
   const setWebhook = async () => {
-    if (streamers()) {
+    if (isStreamer()) {
       if (regex.test(url())) {
         // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-        const { status, ...others } = streamers();
+        const { status, ...others } = signal();
         const response = await request(
           {
             method: 'PUT',
@@ -46,15 +52,12 @@ export default function Searchbar(props) {
   };
 
   const deleteWebhook = async () => {
-    if (streamers()) {
+    if (isStreamer()) {
       if (regex.test(url())) {
         const response = await request(
           {
             method: 'DELETE',
-            url: '/webhooks',
-            data: {
-              url: url(),
-            },
+            url: `/webhooks?url=${encodeURIComponent(url())}`,
           },
           { api: false },
         );
@@ -101,11 +104,7 @@ export default function Searchbar(props) {
               <button type="submit" class="rounded-sm bg-blue-800 px-4 py-2 font-semibold text-white hover:bg-blue-900">
                 구독
               </button>
-              <button
-                type="button"
-                class="rounded-sm bg-red-800 px-4 py-2 font-semibold text-white hover:bg-red-900"
-                onClick={deleteWebhook}
-              >
+              <button type="button" class="rounded-sm bg-red-800 px-4 py-2 font-semibold text-white hover:bg-red-900" onClick={deleteWebhook}>
                 취소
               </button>
             </div>

@@ -1,10 +1,10 @@
-import { For, createEffect } from 'solid-js';
+import { For, JSXElement, createEffect } from 'solid-js';
 import { createQuery } from '@tanstack/solid-query';
 import { CardGrid, Card, CardSkeleton } from 'components/Cards';
-import { useStreamer } from 'hooks/useContext';
+import { useAppDispatch } from 'hooks/useContext';
 import request from 'utils/httpRequest';
 
-export default function Home() {
+export default function Home(): JSXElement {
   const fetchData = async q => {
     const response = await request({
       method: 'GET',
@@ -18,7 +18,7 @@ export default function Home() {
   const queryCount = createQuery(() => ['webhooks/count'], fetchData);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, { set }] = useStreamer();
+  const { set } = useAppDispatch();
 
   createEffect(() => {
     if (!queryStreamer.isLoading) {
@@ -40,16 +40,8 @@ export default function Home() {
 
   return (
     <section>
-      {queryCount.isLoading ? null : (
-        <div class="mb-4 text-center text-gray-300 sm:-mt-4 sm:text-left">{queryCount.data}개의 웹후크가 구독 중</div>
-      )}
-      <CardGrid>
-        {queryStreamer.isLoading ? (
-          <For each={Array(12).fill(null)}>{() => <CardSkeleton />}</For>
-        ) : (
-          <Card list={queryStreamer.data} />
-        )}
-      </CardGrid>
+      {queryCount.isLoading ? null : <div class="mb-4 text-center text-gray-300 sm:-mt-4 sm:text-left">{queryCount.data}개의 웹후크가 구독 중</div>}
+      <CardGrid>{queryStreamer.isLoading ? <For each={Array(12).fill(null)}>{() => <CardSkeleton />}</For> : <Card list={queryStreamer.data} />}</CardGrid>
     </section>
   );
 }

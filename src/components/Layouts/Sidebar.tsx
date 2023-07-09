@@ -1,20 +1,29 @@
-import { For, JSX } from 'solid-js';
+import { For, JSXElement, Accessor, Setter } from 'solid-js';
 import { A, useLocation } from '@solidjs/router';
 import { Dialog, DialogPanel, Transition, TransitionChild } from 'solid-headless';
-import { HiOutlineBellAlert } from 'solid-icons/hi';
+import { HiOutlineBellAlert, HiOutlineMegaphone, HiOutlineQuestionMarkCircle } from 'solid-icons/hi';
+import { twMerge } from 'tailwind-merge';
 import Fragment from 'components/Fragment';
-import classNames from 'utils/classNames';
 
-const navigation = [{ name: '구독', href: '/', icon: HiOutlineBellAlert }];
+const navigation = [
+  { name: '구독', href: '/', icon: HiOutlineBellAlert },
+  { name: '공지사항', href: '/notice', icon: HiOutlineMegaphone },
+  { name: 'FAQ', href: '/faq', icon: HiOutlineQuestionMarkCircle },
+];
 
-export default function Sidebar(): JSX.Element {
+interface ISidebarMobile {
+  sidebarOpen: Accessor<boolean>;
+  setSidebarOpen: Setter<boolean>;
+}
+
+export default function Sidebar(): JSXElement {
   const location = useLocation();
 
   return (
     <section class="hidden xl:fixed xl:inset-y-0 xl:z-50 xl:flex xl:w-72 xl:flex-col">
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-black/10 px-6 ring-1 ring-white/5">
         <A href="/" class="flex h-16 w-fit shrink-0 items-center">
-          <img class="h-8 w-auto" src="/tsurai_logo.png" alt="tsurai_logo" />
+          <img class="h-8 w-auto" src="/tsurai_logo_dark.png" alt="tsurai_logo" />
         </A>
         <nav class="flex flex-1 flex-col">
           <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -25,10 +34,8 @@ export default function Sidebar(): JSX.Element {
                     <li>
                       <A
                         href={item.href}
-                        class={classNames(
-                          item.href === location.pathname
-                            ? 'bg-gray-800 text-white'
-                            : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                        class={twMerge(
+                          item.href === location.pathname ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                           'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                         )}
                       >
@@ -47,7 +54,7 @@ export default function Sidebar(): JSX.Element {
   );
 }
 
-export function SidebarMobile(props): JSX.Element {
+export function SidebarMobile(props: ISidebarMobile): JSXElement {
   const closeSidebar = () => {
     props.setSidebarOpen(false);
   };
@@ -77,7 +84,7 @@ export function SidebarMobile(props): JSX.Element {
           <DialogPanel class="flex flex-1">
             <div class="flex max-w-xs grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 ring-1 ring-white/10">
               <A href="/" class="flex h-16 w-fit shrink-0 items-center">
-                <img class="h-8 w-auto" src="/tsurai_logo.png" alt="tsurai_logo" />
+                <img class="h-8 w-auto" src="/tsurai_logo_dark.png" alt="tsurai_logo" />
               </A>
               <nav class="flex flex-1 flex-col">
                 <ul role="list" class="flex flex-1 flex-col gap-y-7">
@@ -88,10 +95,8 @@ export function SidebarMobile(props): JSX.Element {
                           <li>
                             <A
                               href={item.href}
-                              class={classNames(
-                                item.href === location.pathname
-                                  ? 'bg-gray-800 text-white'
-                                  : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                              class={twMerge(
+                                item.href === location.pathname ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
                                 'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6',
                               )}
                               onClick={closeSidebar}

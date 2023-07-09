@@ -1,10 +1,16 @@
-import { Show } from 'solid-js';
+import { JSXElement, Show } from 'solid-js';
 import { FaSolidXmark, FaSolidCheck } from 'solid-icons/fa';
-import { useStreamer } from 'hooks/useContext';
-import classNames from 'utils/classNames';
+import { twMerge } from 'tailwind-merge';
+import { useAppState, useAppDispatch } from 'hooks/useContext';
 
-export default function Toggle(props) {
-  const [streamer, { modifyStreamer, modifyStatus }] = useStreamer();
+interface IToggle {
+  name: string;
+  label?: string;
+}
+
+export default function Toggle(props: IToggle): JSXElement {
+  const { signal } = useAppState();
+  const { modifyStreamer, modifyStatus } = useAppDispatch();
 
   const onChangeHandler = evt => {
     const { checked } = evt.target;
@@ -20,31 +26,22 @@ export default function Toggle(props) {
   };
 
   return (
-    <Show when={streamer()}>
+    <Show when={Object.keys(signal()).length > 1}>
       <label class="relative inline-flex cursor-pointer items-center">
-        <input
-          type="checkbox"
-          checked={streamer()['status'][props.name]}
-          class="peer sr-only"
-          onChange={onChangeHandler}
-        />
+        <input type="checkbox" checked={signal()['status'][props.name]} class="peer sr-only" onChange={onChangeHandler} />
         <div class="peer h-6 w-11 rounded-full border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none" />
         <span class="absolute left-0.5 top-0.5 flex h-5 w-5 items-center justify-center rounded-full border border-gray-300 bg-white transition-all peer-checked:translate-x-full peer-checked:border-white">
-          {streamer()['status'][props.name] ? (
+          {signal()['status'][props.name] ? (
             <FaSolidCheck
-              class={classNames(
-                streamer()['status'][props.name]
-                  ? 'opacity-100 duration-200 ease-in'
-                  : 'opacity-0 duration-100 ease-out',
+              class={twMerge(
+                signal()['status'][props.name] ? 'opacity-100 duration-200 ease-in' : 'opacity-0 duration-100 ease-out',
                 'h-3 w-3 fill-blue-600 transition-opacity',
               )}
             />
           ) : (
             <FaSolidXmark
-              class={classNames(
-                streamer()['status'][props.name]
-                  ? 'opacity-0 duration-100 ease-out'
-                  : 'opacity-100 duration-200 ease-in',
+              class={twMerge(
+                signal()['status'][props.name] ? 'opacity-0 duration-100 ease-out' : 'opacity-100 duration-200 ease-in',
                 'h-3 w-3 fill-gray-500 transition-opacity',
               )}
             />
