@@ -42,7 +42,7 @@ const App: Component = () => {
 
       <section class="flex h-full flex-col xl:pl-72">
         <Searchbar setSidebarOpen={setSidebarOpen} />
-        <Banner content={notice()} bannerOpen={bannerOpen} setBannerOpen={setBannerOpen} />
+        <Banner content={notice()} bannerOpen={bannerOpen} />
         <main class="flex-auto p-4 sm:p-8">
           <Route />
         </main>
