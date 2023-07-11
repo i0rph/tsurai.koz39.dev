@@ -1,13 +1,12 @@
-import { For, JSXElement, Accessor, Setter } from 'solid-js';
+import { For, Accessor, Setter, Component } from 'solid-js';
 import { A, useLocation } from '@solidjs/router';
 import { Dialog, DialogPanel, Transition, TransitionChild } from 'solid-headless';
-import { HiOutlineBellAlert, HiOutlineMegaphone, HiOutlineQuestionMarkCircle } from 'solid-icons/hi';
+import { HiOutlineBellAlert, HiOutlineQuestionMarkCircle } from 'solid-icons/hi';
 import { twMerge } from 'tailwind-merge';
 import Fragment from 'components/Fragment';
 
 const navigation = [
   { name: '구독', href: '/', icon: HiOutlineBellAlert },
-  { name: '공지사항', href: '/notice', icon: HiOutlineMegaphone },
   { name: 'FAQ', href: '/faq', icon: HiOutlineQuestionMarkCircle },
 ];
 
@@ -16,7 +15,7 @@ interface ISidebarMobile {
   setSidebarOpen: Setter<boolean>;
 }
 
-export default function Sidebar(): JSXElement {
+const Sidebar: Component = () => {
   const location = useLocation();
 
   return (
@@ -52,9 +51,9 @@ export default function Sidebar(): JSXElement {
       </div>
     </section>
   );
-}
+};
 
-export function SidebarMobile(props: ISidebarMobile): JSXElement {
+export const SidebarMobile: Component<ISidebarMobile> = props => {
   const closeSidebar = () => {
     props.setSidebarOpen(false);
   };
@@ -118,4 +117,6 @@ export function SidebarMobile(props: ISidebarMobile): JSXElement {
       </Dialog>
     </Transition>
   );
-}
+};
+
+export default Sidebar;
