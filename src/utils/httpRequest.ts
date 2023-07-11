@@ -22,7 +22,7 @@ async function request(object: IObject, requestOption = {}) {
     const option = setDefaultRequestOption(requestOption);
 
     const response = await axios.create({
-      baseURL: import.meta.env.VITE_API_BASEURL ?? 'https://api.koz39.dev/',
+      baseURL: import.meta.env.VITE_API_BASEURL ?? 'https://puyo.koz39.dev/',
       headers: {
         'Content-type': option.type ?? 'application/json',
       },
