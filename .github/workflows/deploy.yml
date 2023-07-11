@@ -1,0 +1,38 @@
+name: Tsuraicord Deployment
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js 16.16.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16.16.0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.7
+
+      - name: Install Node Package Dependencies
+        run: pnpm install
+
+      - name: Build Solid
+        run: pnpm run build
+
+      - name: Upload Files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.HOST }}
+          port: ${{ secrets.PORT }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          server-dir: ${{ secrets.REMOTE_DIR }}
+          local-dir: './build/'
+          dangerous-clean-slate: true
