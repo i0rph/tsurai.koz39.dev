@@ -4,18 +4,18 @@ import { render } from 'solid-js/web';
 import { Router } from '@solidjs/router';
 import { QueryClient, QueryClientProvider } from '@tanstack/solid-query';
 import { Toaster } from 'solid-toast';
+import { createMediaQuery } from '@solid-primitives/media';
 import { AppProvider } from 'hooks/useContext';
 import App from './app';
 
-if (import.meta.env.DEV) {
-  import('solid-devtools');
-}
+const isSmall = createMediaQuery('(min-width: 640px)');
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
+      retry: 1,
     },
   },
 });
@@ -32,7 +32,7 @@ render(
       <QueryClientProvider client={queryClient}>
         <AppProvider>
           <App />
-          <Toaster position={screen.availWidth > 640 ? 'top-center' : 'bottom-center'} toastOptions={{ duration: 3000 }} />
+          <Toaster position={isSmall() ? 'top-center' : 'bottom-center'} toastOptions={{ duration: 3000 }} />
         </AppProvider>
       </QueryClientProvider>
     </Router>

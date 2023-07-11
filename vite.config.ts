@@ -1,19 +1,12 @@
 import { defineConfig } from 'vite';
 import solidPlugin from 'vite-plugin-solid';
-import devtools from 'solid-devtools/vite';
 import eslintPlugin from 'vite-plugin-eslint';
 import path from 'path';
 
 const __dirname = path.resolve();
 
 export default defineConfig({
-  plugins: [
-    devtools({
-      autoname: true,
-    }),
-    solidPlugin(),
-    eslintPlugin(),
-  ],
+  plugins: [solidPlugin(), eslintPlugin()],
   server: {
     port: 3000,
     open: true,
