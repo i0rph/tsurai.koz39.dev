@@ -1,4 +1,4 @@
-import { JSXElement, Show } from 'solid-js';
+import { Component, JSX, Show, createMemo } from 'solid-js';
 import { useAppState, useAppDispatch } from 'hooks/useContext';
 
 interface ICheckbox {
@@ -7,12 +7,14 @@ interface ICheckbox {
   title: string;
 }
 
-export default function Checkbox(props: ICheckbox): JSXElement {
+const Checkbox: Component<ICheckbox> = props => {
   const { signal } = useAppState();
   const { modifyStreamer, modifyStatus } = useAppDispatch();
 
-  const onChangeHandler = evt => {
-    modifyStreamer(props.name, props.detail, evt.target.checked);
+  const isStreamer = createMemo<boolean>(() => Object.keys(signal()).length > 1);
+
+  const onChangeHandler: JSX.EventHandler<HTMLInputElement, Event> = evt => {
+    modifyStreamer(props.name, props.detail, evt.currentTarget.checked);
 
     if (signal()['status'][props.name] && !signal()[props.name]['streamup'] && !signal()[props.name]['streamdown']) {
       modifyStatus(props.name, false);
@@ -22,7 +24,7 @@ export default function Checkbox(props: ICheckbox): JSXElement {
   };
 
   return (
-    <Show when={Object.keys(signal()).length > 1}>
+    <Show when={isStreamer()}>
       <div class="flex w-full items-center justify-center">
         <div class="flex h-6 items-center">
           <input
@@ -41,4 +43,6 @@ export default function Checkbox(props: ICheckbox): JSXElement {
       </div>
     </Show>
   );
-}
+};
+
+export default Checkbox;

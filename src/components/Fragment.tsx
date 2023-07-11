@@ -1,9 +1,6 @@
-import { JSXElement } from 'solid-js';
+import { ParentComponent } from 'solid-js';
 
-interface IFragment {
-  children: JSXElement;
-}
-
-export default function Fragment(props: IFragment): JSXElement {
+const Fragment: ParentComponent = props => {
   return <>{props.children}</>;
-}
+};
+export default Fragment;

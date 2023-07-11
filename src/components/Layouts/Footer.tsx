@@ -1,20 +1,21 @@
-import { For, JSXElement } from 'solid-js';
+import { Component, For } from 'solid-js';
 import { FaBrandsGithub, FaBrandsTwitter } from 'solid-icons/fa';
+import { IconProps } from 'solid-icons';
 
 const navigation = [
   {
     name: 'Twitter',
     href: 'https://twitter.com/i0rph',
-    icon: props => <FaBrandsTwitter {...props} />,
+    icon: (props: IconProps) => <FaBrandsTwitter {...props} />,
   },
   {
     name: 'GitHub',
     href: 'https://github.com/iorphx/tsurai.koz39.dev',
-    icon: props => <FaBrandsGithub {...props} />,
+    icon: (props: IconProps) => <FaBrandsGithub {...props} />,
   },
 ];
 
-export default function Footer(): JSXElement {
+const Footer: Component = () => {
   const year = new Date().getFullYear();
 
   return (
@@ -36,4 +37,6 @@ export default function Footer(): JSXElement {
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;

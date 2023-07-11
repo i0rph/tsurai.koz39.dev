@@ -1,9 +1,7 @@
-import { JSXElement } from 'solid-js';
+import { ParentComponent } from 'solid-js';
 
-interface IContentLayout {
-  children: JSXElement;
-}
-
-export default function ContentLayout(props: IContentLayout): JSXElement {
+const ContentLayout: ParentComponent = props => {
   return <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{props.children}</div>;
-}
+};
+
+export default ContentLayout;

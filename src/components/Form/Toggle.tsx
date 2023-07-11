@@ -1,4 +1,4 @@
-import { JSXElement, Show } from 'solid-js';
+import { Component, JSX, Show, createMemo } from 'solid-js';
 import { FaSolidXmark, FaSolidCheck } from 'solid-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import { useAppState, useAppDispatch } from 'hooks/useContext';
@@ -8,12 +8,14 @@ interface IToggle {
   label?: string;
 }
 
-export default function Toggle(props: IToggle): JSXElement {
+const Toggle: Component<IToggle> = props => {
   const { signal } = useAppState();
   const { modifyStreamer, modifyStatus } = useAppDispatch();
 
-  const onChangeHandler = evt => {
-    const { checked } = evt.target;
+  const isStreamer = createMemo<boolean>(() => Object.keys(signal()).length > 1);
+
+  const onChangeHandler: JSX.EventHandler<HTMLInputElement, Event> = evt => {
+    const { checked } = evt.currentTarget;
     modifyStatus(props.name, checked);
 
     if (checked) {
@@ -26,7 +28,7 @@ export default function Toggle(props: IToggle): JSXElement {
   };
 
   return (
-    <Show when={Object.keys(signal()).length > 1}>
+    <Show when={isStreamer()}>
       <label class="relative inline-flex cursor-pointer items-center">
         <input type="checkbox" checked={signal()['status'][props.name]} class="peer sr-only" onChange={onChangeHandler} />
         <div class="peer h-6 w-11 rounded-full border-gray-600 bg-gray-700 peer-checked:bg-blue-600 peer-focus:outline-none" />
@@ -53,4 +55,6 @@ export default function Toggle(props: IToggle): JSXElement {
       </label>
     </Show>
   );
-}
+};
+
+export default Toggle;
