@@ -1,11 +1,9 @@
 import axios from 'axios';
-import toast from 'solid-toast';
 
 interface IOption {
   type?: string;
   api?: boolean;
 }
-
 interface IObject {
   method: string;
   url: string;
@@ -31,7 +29,6 @@ async function request(object: IObject, requestOption = {}) {
     })(object);
 
     if (option.api && ![200, 204].includes(response.status)) {
-      toast.error('요청 처리 중 오류가 발생했습니다.');
       throw new Error(response.data);
     }
 
@@ -41,10 +38,7 @@ async function request(object: IObject, requestOption = {}) {
       console.error(e);
     }
 
-    const error = e.response?.data ? e.response.data : e;
-
-    toast.error('요청 처리 중 오류가 발생했습니다.');
-    throw new Error(error.error);
+    throw new Error(e);
   }
 }
 
