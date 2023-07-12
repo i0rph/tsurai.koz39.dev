@@ -32,11 +32,11 @@ const Checkbox: Component<ICheckbox> = props => {
             type="checkbox"
             checked={signal()[props.name][props.detail]}
             onChange={onChangeHandler}
-            class="h-4 w-4 rounded border-0 border-gray-300 text-blue-600 focus:outline-none focus:ring-0 focus:ring-offset-0"
+            class="h-4 w-4 cursor-pointer rounded border-0 border-gray-300 text-blue-600 focus:outline-none focus:ring-0 focus:ring-offset-0"
           />
         </div>
         <Show when={props.title}>
-          <label for={`${props.name}_${props.detail}`} class="ml-3 select-none font-medium leading-6 text-white">
+          <label for={`${props.name}_${props.detail}`} class="ml-3 cursor-pointer select-none font-medium leading-6 text-white">
             {props.title}
           </label>
         </Show>

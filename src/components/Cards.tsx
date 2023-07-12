@@ -29,11 +29,12 @@ export const Card: Component<ICard> = props => {
             <a href={item.twitch_url} target="_blank">
               <img class="h-10 w-10 flex-shrink-0 rounded-full" src={item.avatar_url} alt="" />
             </a>
-            <a href={item.twitch_url} target="_blank" class="flex-1 truncate">
+            <a href={item.twitch_url} target="_blank" class="truncate">
               <div class="flex items-center space-x-3">
                 <h3 class="truncate text-xl font-medium text-white">{item.name}</h3>
               </div>
             </a>
+            <div class="flex-1" />
             <Toggle name={item.id} />
           </div>
           <div class="grid w-full grid-cols-2 py-4">
